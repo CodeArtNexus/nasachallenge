@@ -48,3 +48,16 @@ function animatePlanets() {
 }
 
 animatePlanets();
+
+
+
+//actualizar la posición de los planetas de acuerdo con el valor del slider del tiempo 
+const timeSlider = document.getElementById('time-slider');
+timeSlider.addEventListener('input', (event) => {
+    const timeValue = event.target.value / 100; // Normalizar entre 0 y 1
+    circleMeshes.forEach(mesh => {
+        const angle = timeValue * Math.PI * 2;
+        mesh.position.x = Math.cos(angle) * mesh.userData.radius;
+        mesh.position.z = Math.sin(angle) * mesh.userData.radius;
+    });
+});

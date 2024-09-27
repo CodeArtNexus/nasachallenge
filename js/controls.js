@@ -169,3 +169,4 @@ function toggleButtonsForCentralView() {
     document.getElementById("speedControl").style.display = 'inline-block';
     document.getElementById("pausePlay").style.display = 'inline-block';
 }
+
