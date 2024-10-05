@@ -1,6 +1,14 @@
 body { margin: 0; }
 canvas { display: block; }
-
+#infoBox {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 10px;
+    display: none; /* Inicialmente oculto */
+    z-index: 10; /* Asegúrate de que esté encima */
+}
 /* Estilos para la barra de controles centrada */
 #zoom-controls {
     position: absolute;
@@ -53,7 +61,6 @@ canvas { display: block; }
     height: 5px;
     margin-left: 20px; 
 }
-<<<<<<< HEAD
 .btn {
     display: inline-block;
     padding: 10px 20px;
@@ -69,8 +76,7 @@ canvas { display: block; }
 
 .btn:hover {
     background-color: #0056b3;
-=======
-
+}
 /* Estilos para el panel de control */
 
 #control-panel {
@@ -114,5 +120,4 @@ canvas { display: block; }
 
 #toggleSpaceship i {
     font-size: 18px;
->>>>>>> d2bf1831c0b46eb76e6a5aaa8b46ed2ec6f023f3
 }

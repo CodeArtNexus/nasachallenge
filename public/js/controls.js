@@ -1,10 +1,12 @@
 // Agregar controles de órbita
-const controls = new THREE.OrbitControls(camera, renderer.domElement);
 controls.enableZoom = true;
 controls.enableRotate = true; // Habilitar rotación en la vista inicial
-controls.target.set(centralSphere.position.x, centralSphere.position.y, centralSphere.position.z);
+controls.target.set(0, 0, 0);
 controls.update();
-
+// Definir controles orbitales para mover la cámara
+controls.enableDamping = true; // Suaviza el movimiento
+controls.dampingFactor = 0.25;
+controls.enableZoom = true;
 let spaceshipControlsActive = false;  // Variable para activar/desactivar controles de la nave
 
 // Manejador para el botón de la nave espacial
@@ -20,72 +22,124 @@ document.getElementById("toggleSpaceship").addEventListener("click", () => {
         document.removeEventListener('keyup', stopSpaceshipMovement);
     }
 });
-
 let currentTarget = centralSphere; // El objetivo actual es la esfera central
 
-// Raycaster y mouse para detectar clics en los planetas
-const raycaster = new THREE.Raycaster();
-const mouse = new THREE.Vector2();
 
-// Función para seleccionar un planeta y aislarlo
-window.addEventListener('click', (event) => {
-    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
-    raycaster.setFromCamera(mouse, camera);
-    const intersects = raycaster.intersectObjects(circleMeshes.filter(mesh => mesh.visible));
+// const raycaster = new THREE.Raycaster(); // Para proyectar el rayo
+// const mouse = new THREE.Vector2(); // Posición del mouse
+// let isMouseMoving = false; // Bandera para detectar si la cámara se está moviendo
+// let selectedPlanet = null; // Planeta actualmente seleccionado
 
-    if (intersects.length > 0) {
-        const intersected = intersects[0].object;
+// // Evento de clic para seleccionar planetas
+// document.addEventListener('mousedown', () => {
+//     isMouseMoving = false; // Reseteamos la bandera
+// });
 
-        // Detener el movimiento de los otros planetas y ocultarlos
-        isPlanetSelected = true;
-        selectedPlanet = intersected; // Guardar el planeta seleccionado
 
-        // Ocultar todos los demás planetas y órbitas, así como la esfera central
-        circleMeshes.forEach(mesh => {
-            if (mesh !== selectedPlanet) {
-                mesh.visible = false;
-            }
-        });
-        orbitLines.forEach(line => {
-            line.visible = false; // Ocultar órbitas
-        });
-        centralSphere.visible = false; // Ocultar la esfera central
+// // Evento para detectar movimiento del mouse
+// window.addEventListener('mousemove', (event) => {
+//     // Convertir las coordenadas del mouse a normalizadas
+//     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+//     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
-        // Mover el planeta a la izquierda y hacer zoom sobre él
-        gsap.to(camera.position, {
-            duration: 1,
-            x: intersected.position.x - 3,  // Moverlo a la izquierda
-            y: intersected.position.y,
-            z: intersected.position.z,
-            onUpdate: () => {
-                camera.lookAt(intersected.position);
-            }
-        });
+//     // Proyectar el rayo desde la cámara a través del mouse
+//     raycaster.setFromCamera(mouse, camera);
 
-        // Cambiar el centro a este objeto para que el usuario pueda rotarlo
-        controls.target.set(intersected.position.x, intersected.position.y, intersected.position.z);
-        controls.enableRotate = true;  // Habilitar la rotación manual del planeta
-        controls.update();
-        currentTarget = intersected;
+//     // Verificar las intersecciones con los planetas
+//     const intersects = raycaster.intersectObjects(circleMeshes.filter(mesh => mesh.visible), true);
 
-        // Mostrar el canvas con información adicional
-        const infoBox = document.getElementById("infoBox");
-        const infoCanvas = document.getElementById("infoCanvas");
-        infoBox.style.display = 'block'; // Mostrar el recuadro
+//     if (intersects.length > 0) {
+//         const intersectedObject = intersects[0].object;
+//         console.log('Planeta bajo el mouse:', intersectedObject.userData.name);
+//     }
+// });
+// document.addEventListener('mouseup', (event) => {
+//     if (!isMouseMoving) {
+//         mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+//         mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
-        // Escribir un texto de prueba en el canvas
-        const ctx = infoCanvas.getContext('2d');
-        ctx.clearRect(0, 0, infoCanvas.width, infoCanvas.height); // Limpiar el canvas
-        ctx.fillStyle = 'black';
-        ctx.font = '20px Arial';
-        ctx.fillText('Información del planeta seleccionado', 20, 50); // Texto de prueba
+//         raycaster.setFromCamera(mouse, camera);
+//         const intersects = raycaster.intersectObjects(circleMeshes.filter(mesh => mesh.visible), true);
 
-        // Ocultar todos los botones excepto el de "Home"
-        toggleButtonsForPlanetView();
-    }
-});
+//         if (intersects.length > 0) {
+//             const intersectedObject = intersects[0].object;
+//             console.log('Planeta intersectado:', intersectedObject.userData.name); // Debug
+
+//             if (selectedPlanet !== intersectedObject) {
+//                 if (selectedPlanet) {
+//                     selectedPlanet.visible = true; 
+//                 }
+//                 selectedPlanet = intersectedObject;
+//                 isolatePlanet(selectedPlanet);
+//             } else {
+//                 selectedPlanet.visible = true; 
+//                 selectedPlanet = null;
+//                 hideInfoBox();
+//             }
+//         } else {
+//             if (selectedPlanet) {
+//                 selectedPlanet.visible = true; 
+//                 selectedPlanet = null;
+//                 hideInfoBox();
+//             }
+//         }
+//     }
+// });
+// // Función para aislar un planeta y mostrar información
+// function isolatePlanet(planet) {
+//     isPlanetSelected = true;
+
+//     // Ocultar todos los demás planetas y órbitas, así como la esfera central
+//     circleMeshes.forEach(mesh => {
+//         if (mesh !== planet) {
+//             mesh.visible = false;
+//         }
+//     });
+//     orbitLines.forEach(line => {
+//         line.visible = false; // Ocultar órbitas
+//     });
+//     centralSphere.visible = false; // Ocultar la esfera central
+
+//     // Mover el planeta y hacer zoom sobre él
+//     gsap.to(camera.position, {
+//         duration: 1,
+//         x: planet.position.x - 3,  // Moverlo a la izquierda
+//         y: planet.position.y,
+//         z: planet.position.z,
+//         onUpdate: () => {
+//             camera.lookAt(planet.position);
+//         }
+//     });
+
+//     // Cambiar el centro a este objeto para que el usuario pueda rotarlo
+//     controls.target.set(planet.position.x, planet.position.y, planet.position.z);
+//     controls.enableRotate = true;  // Habilitar la rotación manual del planeta
+//     controls.update();
+
+//     // Mostrar el canvas con información adicional
+//     const infoBox = document.getElementById("infoBox");
+//     const infoCanvas = document.getElementById("infoCanvas");
+//     infoBox.style.display = 'block'; // Mostrar el recuadro
+
+//     // Escribir un texto de prueba en el canvas
+//     const ctx = infoCanvas.getContext('2d');
+//     ctx.clearRect(0, 0, infoCanvas.width, infoCanvas.height); // Limpiar el canvas
+//     ctx.fillStyle = 'black';
+//     ctx.font = '20px Arial';
+//     ctx.fillText('Información del planeta seleccionado: ' + planet.userData.name, 20, 50); // Texto de prueba
+
+//     // Ocultar todos los botones excepto el de "Home"
+//     toggleButtonsForPlanetView();
+// }
+
+// // Función para ocultar la información
+// function hideInfoBox() {
+//     const infoBox = document.getElementById("infoBox");
+//     infoBox.style.display = 'none'; // Ocultar el recuadro y el canvas
+//     isPlanetSelected = false;
+// }
+
 
 // Función para alternar entre pausa y play
 document.getElementById("pausePlay").addEventListener("click", function() {
@@ -110,7 +164,7 @@ document.getElementById("toggleOrbits").addEventListener("click", () => {
 // Mostrar/Ocultar planetas y desactivar/activar su interactividad
 document.getElementById("togglePlanets").addEventListener("click", () => {
     circleMeshes.forEach(planet => {
-        if (planet !== selectedPlanet) {
+        if (planet !== selectedPlanet2) {
             planet.visible = !planet.visible;
         }
     });
@@ -162,7 +216,7 @@ document.getElementById("resetCenter").addEventListener("click", () => {
 
     // Reiniciar las variables
     isPlanetSelected = false;
-    selectedPlanet = null;
+    selectedPlanet2 = null;
     controls.enableRotate = true; // Mantener habilitada la rotación manual de la escena inicial
 });
 

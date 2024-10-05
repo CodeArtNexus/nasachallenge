@@ -1,6 +1,14 @@
-
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x000000); 
+
+// Luz ambiental
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+scene.add(ambientLight);
+
+// Luz puntual
+const pointLight = new THREE.PointLight(0xffffff, 1, 100);
+pointLight.position.set(0, 0, 0);
+scene.add(pointLight);
 
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 camera.position.z = 10;
@@ -24,13 +32,14 @@ camera.position.set(0, 2, 5);
 camera.lookAt(spaceship.position);
 
 //-----------------------------------------------
-
-// Crear las órbitas de los planetas
 const geometrySphere = new THREE.SphereGeometry(1, 32, 32);
-const materialSphere = new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true });
+const materialSphere = new THREE.MeshBasicMaterial({ 
+    color: 0xffffff, 
+    transparent: true, 
+    opacity: 0 
+});
 const centralSphere = new THREE.Mesh(geometrySphere, materialSphere);
 scene.add(centralSphere); 
-
 
 const materialRed = new THREE.LineBasicMaterial({ color: 0xff0000 });
 const materialBlue = new THREE.LineBasicMaterial({ color: 0x0000ff });
@@ -59,7 +68,14 @@ scene.add(lineRed);
 scene.add(lineBlue);
 scene.add(lineGreen);
 
-const orbitLines = [lineRed, lineBlue, lineGreen]; 
+const orbitLines = [lineRed, lineBlue, lineGreen];
+
+// Inicializar controles
+const controls = new THREE.OrbitControls(camera, renderer.domElement);
+controls.enableZoom = true;
+controls.enableRotate = true;
+controls.target.set(0, 0, 0);
+controls.update();
 
 window.addEventListener('resize', () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
