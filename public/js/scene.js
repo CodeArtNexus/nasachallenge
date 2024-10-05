@@ -8,7 +8,24 @@ camera.position.z = 10;
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
+//-----------------------------------------------
+// Controles de la cámara parte Antonio de la nave
 
+// Crear la nave espacial
+const spaceshipGeometry = new THREE.BoxGeometry(1, 0.5, 2);
+const spaceshipMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+const spaceship = new THREE.Mesh(spaceshipGeometry, spaceshipMaterial);
+spaceship.position.set(0, 0, 0);
+spaceship.visible = false; // Ocultar la nave 
+scene.add(spaceship);
+
+// Posicionar la cámara detrás de la nave para la vista en tercera persona
+camera.position.set(0, 2, 5);
+camera.lookAt(spaceship.position);
+
+//-----------------------------------------------
+
+// Crear las órbitas de los planetas
 const geometrySphere = new THREE.SphereGeometry(1, 32, 32);
 const materialSphere = new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true });
 const centralSphere = new THREE.Mesh(geometrySphere, materialSphere);

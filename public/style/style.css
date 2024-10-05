@@ -53,6 +53,7 @@ canvas { display: block; }
     height: 5px;
     margin-left: 20px; 
 }
+<<<<<<< HEAD
 .btn {
     display: inline-block;
     padding: 10px 20px;
@@ -68,4 +69,50 @@ canvas { display: block; }
 
 .btn:hover {
     background-color: #0056b3;
+=======
+
+/* Estilos para el panel de control */
+
+#control-panel {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 200px;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.5);  /* Fondo negro semitransparente */
+    color: white;  /* Texto en blanco */
+    border-radius: 10px;  /* Bordes redondeados */
+    font-family: Arial, sans-serif;
+    z-index: 1000;  /* Asegurarse de que esté por encima del contenido */
+}
+
+#control-panel h3 {
+    margin: 0 0 10px 0;
+    font-size: 16px;
+    text-align: left;
+}
+
+#control-panel ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+#control-panel li {
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+#toggleSpaceship {
+    background-color: rgba(0, 0, 0, 0.5);  /* Fondo semitransparente */
+    color: white;  /* Texto en blanco */
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+#toggleSpaceship i {
+    font-size: 18px;
+>>>>>>> d2bf1831c0b46eb76e6a5aaa8b46ed2ec6f023f3
 }
