@@ -1,7 +1,3 @@
-// Importa Firebase y Firestore
-// import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-// import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
-
 // Configuración de Firebase
 const firebaseConfig = {
     apiKey: "AIzaSyDx8kUbVWlFLeZKkzfI41aeALNvbWyl_6Y",
@@ -11,67 +7,82 @@ const firebaseConfig = {
     messagingSenderId: "15648509471",
     appId: "1:15648509471:web:12272583fe0093d9c8cf2a"
 };
-let planets = {}
 
 // Inicializar Firebase
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
-// const db = getFirestore(app);
 
-const productsRef = db.collection('Accuracy_Eq');
+// Función para cargar datos de la colección seleccionada
+function loadCollectionData(collectionName) {
+    const collectionRef = db.collection(collectionName);
 
-productsRef.get().then((querySnapshot) => {
-  let listHTML = '<ul>';
-  querySnapshot.forEach((doc) => {
-    const data = doc.data();
-    const docID = doc.id;
+    collectionRef.get().then((querySnapshot) => {
+        let listHTML = `<h3>Datos de la colección: ${collectionName}</h3><ul>`;
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            const docID = doc.id;
 
-    listHTML += `<h2>${docID}</h2><li>`;
-    
-    for (const key in data) {
-        listHTML += `<strong>${key}:</strong> `; 
-         // Check if it's a nested object
-        listHTML += '<ul>';
-        let longitude = 0;
-        let latitude = 0;
-        let distance = 0;
-        for (const nestedKey in data[key]) {
-            listHTML += `<li>${nestedKey}: ${data[key][nestedKey]}</li>`;
-            if (nestedKey === 'HeliocentricLongitude') {
-                longitude = data[key][nestedKey];
+            listHTML += `<h2>${docID}</h2><li>`;
+
+            // Mostrar datos según la estructura
+            if (typeof data === 'object' && !Array.isArray(data)) {
+                for (const key in data) {
+                    if (typeof data[key] === 'object') {
+                        listHTML += `<strong>${key}:</strong> <ul>`;
+                        let longitude = 0, latitude = 0, distance = 0;
+
+                        for (const nestedKey in data[key]) {
+                            listHTML += `<li>${nestedKey}: ${data[key][nestedKey]}</li>`;
+                            if (nestedKey === 'HeliocentricLongitude') longitude = data[key][nestedKey];
+                            if (nestedKey === 'Latitude') latitude = data[key][nestedKey];
+                            if (nestedKey === 'Distance') distance = data[key][nestedKey];
+                        }
+
+                        let cartesianCoords = heliocentricToCartesian(longitude, latitude, distance);
+                        listHTML += `<li>Cartesian Coordinates: <br> x: ${cartesianCoords.x}, y: ${cartesianCoords.y}, z: ${cartesianCoords.z}</li>`;
+                        listHTML += `</ul>`;
+                    } else {
+                        listHTML += `<strong>${key}:</strong> ${data[key]}<br>`;
+                    }
+                }
+            } else {
+                listHTML += `<strong>Datos:</strong> ${JSON.stringify(data)}<br>`;
             }
-            if (nestedKey === 'Latitude') {
-                latitude = data[key][nestedKey];
-            }
-            else{
-                distance = data[key][nestedKey];
-            }
-        }
-        // console.log(key)
-        let cartesianCoords = heliocentricToCartesian(longitude, latitude, distance);
-        listHTML += `<li>Cartesian Coordinates: <br> x: ${cartesianCoords.x}, y: ${cartesianCoords.y}, z: ${cartesianCoords.z}</li>`;
+
+            listHTML += '</li>';
+        });
         listHTML += '</ul>';
-        if (!planets[docID]) {
-            planets[docID] = {}; // Initialize if it doesn't exist
+
+        // Agregar los datos a la lista existente
+        document.getElementById('product-list').innerHTML += listHTML; // Cambiar innerHTML a +=
+    }).catch((error) => {
+        console.error("Error al cargar los datos: ", error);
+    });
+}
+
+// Evento para manejar el cambio en el selector de colección
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('collection-select').addEventListener('change', function() {
+        const selectedCollection = this.value;
+
+        // Limpiar la lista de productos antes de cargar la nueva colección
+        document.getElementById('product-list').innerHTML = '';
+
+        // Cargar la colección seleccionada o todas las colecciones
+        if (selectedCollection === 'all') {
+            loadCollectionData('Accuracy_Eq');
+            loadCollectionData('Planetas');
+            loadCollectionData('Asteroides');
+            loadCollectionData('Estrellas');
+        } else {
+            loadCollectionData(selectedCollection);
         }
-        
-
-        planets[docID][`${key}`] = {
-            x: cartesianCoords.x,
-            y: cartesianCoords.y,
-            z: cartesianCoords.z,
-            a: distance
-        };
-        
-    }
-    listHTML += '</li>';
-
-  });
-  listHTML += '</ul>';
-  console.log(planets)
-  document.getElementById('product-list').innerHTML = listHTML;
+    });
 });
 
+
+// Cargar datos iniciales
+loadCollectionData('Accuracy_Eq'); // Carga inicial
 
 function heliocentricToCartesian(longitude, latitude, distance) {
     const x = distance * Math.cos(latitude) * Math.cos(longitude);
@@ -93,32 +104,37 @@ const radians = arcseconds * (Math.PI / 180 / 3600);
 return radians;
 }
 
-// // Referencia al formulario
-// const form = document.getElementById('dataForm');
+document.addEventListener('DOMContentLoaded', () => {
+    // Aquí va tu código
+    const dataForm = document.getElementById('dataForm');
+    dataForm.addEventListener('submit', async (e) => {
+        e.preventDefault(); // Evitar el envío normal del formulario
 
-// // Manejar el evento de envío del formulario
-// form.addEventListener('submit', async (e) => {
-//     e.preventDefault();
+        // Capturar los datos del formulario
+        const collection = document.getElementById('collection').value;
+        const nombre = document.getElementById('nombre').value;
+        const longitud = document.getElementById('longitud').value;
+        const latitud = document.getElementById('latitud').value;
 
-//     // Obtener los valores del formulario
-//     const collectionName = document.getElementById('collection').value;
-//     const nombre = document.getElementById('nombre').value;
-//     const longitud = document.getElementById('longitud').value;
-//     const latitud = document.getElementById('latitud').value;
+        // Crear un objeto con los datos
+        const data = {
+            nombre: nombre,
+            HeliocentricLongitude: parseFloat(longitud),
+            Latitude: parseFloat(latitud)
+        };
 
-//     // Crear un nuevo documento en la colección seleccionada
-//     try {
-//         const docRef = await addDoc(collection(db, collectionName), {
-//             nombre: nombre,
-//             longitud: longitud,
-//             latitud: latitud
-//         });
-//         alert("Documento agregado con ID: " + docRef.id);
-//     } catch (e) {
-//         console.error("Error al agregar documento: ", e);
-//         alert("Error al agregar documento");
-//     }
+        try {
+            // Guardar los datos en la colección seleccionada
+            await db.collection(collection).add(data);
+            console.log("Datos agregados con éxito!");
 
-//     // Limpiar el formulario
-//     form.reset();
-// });
+            // Limpiar el formulario
+            dataForm.reset();
+
+            // Actualizar la lista de productos
+            alert('Datos enviados correctamente');
+        } catch (error) {
+            console.error("Error al agregar los datos: ", error);
+        }
+    });
+});

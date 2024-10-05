@@ -3,36 +3,178 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enviar datos a Firestore</title>
+    <title>Base de Datos</title>
     <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore-compat.js"></script>
     <script src="app.js"></script>
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            margin: 20px;
+        }
+
+        .card {
+            background-color: #f4f4f4;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 45%;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        form label, form input {
+            display: block;
+            margin: 10px 0;
+        }
+
+        form input[type="text"], form select {
+            padding: 8px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        form button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        form button:hover {
+            background-color: #0056b3;
+        }
+
+        .floating-button {
+            position: fixed;
+            bottom: 20px;
+            background-color: #007bff;
+            color: white;
+            padding: 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .floating-button.left {
+            left: 20px;
+        }
+
+        .floating-button.right {
+            right: 20px;
+        }
+
+        .floating-button i {
+            font-size: 20px;
+        }
+
+        .floating-button:hover {
+            background-color: #0056b3;
+        }
+
+        #search-bar {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        #search-bar input {
+            padding: 10px;
+            width: 100%;
+            max-width: 300px;
+            border: 2px solid #ddd;
+            border-radius: 50px;
+            padding-left: 40px;
+            outline: none;
+        }
+
+        #search-bar .icon {
+            position: relative;
+            left: -35px;
+            top: 8px;
+            font-size: 18px;
+            color: #999;
+            pointer-events: none;
+        }
+
+    </style>
 </head>
 <body>
     <h1>Formulario de Envío a Firestore</h1>
 
-    <div id="product-list"></div>
+    <div class="container">
+        <!-- Card para el formulario -->
+        <div class="card">
+            <h2>Formulario de Envío</h2>
+            <form id="dataForm">
+                <label for="collection">Selecciona una colección:</label>
+                <select id="collection" name="collection">
+                    <option value="Planetas">Planetas</option>
+                    <option value="Asteroides">Asteroides</option>
+                    <option value="Estrellas">Estrellas</option>
+                </select><br><br>
 
-    <form id="dataForm">
-        <label for="collection">Selecciona una colección:</label>
-        <select id="collection" name="collection">
-            <option value="planetas">Planetas</option>
-            <option value="asteroides">Asteroides</option>
-            <option value="estrellas">Estrellas</option>
-        </select><br><br>
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" required><br><br>
 
-        <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="nombre" required><br><br>
+                <label for="longitud">Longitud:</label>
+                <input type="text" id="longitud" name="longitud" required><br><br>
 
-        <label for="longitud">Longitud:</label>
-        <input type="text" id="longitud" name="longitud" required><br><br>
+                <label for="latitud">Latitud:</label>
+                <input type="text" id="latitud" name="latitud" required><br><br>
 
-        <label for="latitud">Latitud:</label>
-        <input type="text" id="latitud" name="latitud" required><br><br>
+                <button type="submit">Enviar</button>
+            </form>
+        </div>
 
-        <button type="submit">Enviar</button>
-    </form>
+        <!-- Card para la lista de productos -->
+        <div class="card">
+            <h2>Lista de Productos</h2>
 
-    
+            <label for="collection-select">Selecciona una colección:</label>
+            <select id="collection-select">
+                <option value="all">Todas las colecciones</option>
+                <option value="Accuracy_Eq">Accuracy_Eq</option>
+                <option value="Planetas">Planetas</option>
+                <option value="Asteroides">Asteroides</option>
+                <option value="Estrellas">Estrellas</option>
+            </select>
+            
+
+            <div id="product-list"></div>
+        </div>
+    </div>
+
+    <!-- Botón flotante para regresar a index.html -->
+    <div class="floating-button left" onclick="window.location.href='index.html'">
+        <i class="fas fa-home"></i>
+    </div>
+
+    <!-- Botón flotante para volver al inicio -->
+    <div class="floating-button right" onclick="scrollToTop()">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <script>
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+    <script>src="app.js"</script>
 </body>
 </html>
