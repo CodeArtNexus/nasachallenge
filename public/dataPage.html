@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enviar datos a Firestore</title>
+    <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore-compat.js"></script>
+    <script src="app.js"></script>
+</head>
+<body>
+    <h1>Formulario de Envío a Firestore</h1>
+
+    <div id="product-list"></div>
+
+    <form id="dataForm">
+        <label for="collection">Selecciona una colección:</label>
+        <select id="collection" name="collection">
+            <option value="planetas">Planetas</option>
+            <option value="asteroides">Asteroides</option>
+            <option value="estrellas">Estrellas</option>
+        </select><br><br>
+
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" required><br><br>
+
+        <label for="longitud">Longitud:</label>
+        <input type="text" id="longitud" name="longitud" required><br><br>
+
+        <label for="latitud">Latitud:</label>
+        <input type="text" id="latitud" name="latitud" required><br><br>
+
+        <button type="submit">Enviar</button>
+    </form>
+
+    
+</body>
+</html>
