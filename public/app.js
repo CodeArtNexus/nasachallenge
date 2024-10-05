@@ -54,19 +54,7 @@ productsRef.get().then((querySnapshot) => {
         if (!planets[docID]) {
             planets[docID] = {}; // Initialize if it doesn't exist
         }
-        const keplerian = db.collection('Keplerian_Elements_Rates');
-        keplerian.where('Document ID' == docID).get()
-        .then((secondQuerySnapshot) => {
-          secondQuerySnapshot.forEach((secondDoc) => {
-            console.log(secondDoc.data());
-          });
-        }).catch((error) => {
-          console.error("Error fetching second query: ", error);
-        });
-    });
-    }).catch((error) => {
-        console.error("Error fetching first query: ", error);
-    });
+        
 
         planets[docID][`${key}`] = {
             x: cartesianCoords.x,
