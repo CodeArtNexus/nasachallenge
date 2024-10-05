@@ -1,5 +1,62 @@
+// Crear la escena
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x000000); 
+scene.background = new THREE.Color(0x000000); // Fondo negro inicial
+
+// Crear geometría de las estrellas
+const starGeometry = new THREE.BufferGeometry();
+const starCount = 2000; // Aumentar el número de estrellas
+const starPositions = new Float32Array(starCount * 3); // Array para almacenar las posiciones
+
+for (let i = 0; i < starCount * 3; i++) {
+    // Generar posiciones aleatorias para las estrellas
+    starPositions[i] = (Math.random() - 0.5) * 2000; // Distribución en un espacio grande
+}
+
+starGeometry.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
+
+// Material para las estrellas
+const starMaterial = new THREE.PointsMaterial({
+    color: 0xffffff, // Color blanco para las estrellas
+    size: 0.5, // Tamaño de cada estrella (más pequeño)
+    transparent: true,
+    opacity: 0.5 // Opacidad inicial
+});
+
+// Crear la nube de estrellas
+const stars = new THREE.Points(starGeometry, starMaterial);
+scene.add(stars);
+
+// Variables para el suavizado
+let targetOpacity = 0.5;
+let currentOpacity = targetOpacity;
+const fadeSpeed = 0.005; // Ajusta la velocidad del desvanecimiento
+
+// Animación para el parpadeo
+function animateStars() {
+    const time = Date.now() * 0.001; // Reducir aún más la velocidad de oscilación
+
+    // Cambiar la opacidad de forma suave
+    targetOpacity = 0.4 + 0.3 * Math.sin(time * 0.5); // Oscilar entre 0.4 y 0.7
+    currentOpacity += (targetOpacity - currentOpacity) * fadeSpeed; // Suavizado
+
+    starMaterial.opacity = currentOpacity; // Actualizar la opacidad del material
+
+    // Actualizar las posiciones de las estrellas con menor probabilidad
+    for (let i = 0; i < starCount; i++) {
+        if (Math.random() < 0.002) { // Cambiar posición aleatoria con menor probabilidad
+            starPositions[i * 3] = (Math.random() - 0.5) * 2000; // Nueva posición X
+            starPositions[i * 3 + 1] = (Math.random() - 0.5) * 2000; // Nueva posición Y
+            starPositions[i * 3 + 2] = (Math.random() - 0.5) * 2000; // Nueva posición Z
+        }
+    }
+
+    starGeometry.attributes.position.needsUpdate = true; // Marcar la geometría para actualización
+
+    requestAnimationFrame(animateStars); // Loop de animación
+}
+
+animateStars(); // Iniciar el parpadeo
+
 
 // Luz ambiental
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
