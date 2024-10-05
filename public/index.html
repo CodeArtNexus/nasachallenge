@@ -13,25 +13,21 @@
         <canvas id="infoCanvas" width="400" height="300" style="border: 1px solid #000;"></canvas>
     </div>
 
-    <div id="zoom-controls">
+    <div id="zoom-controls" class="floating-controls">
         <button id="zoomOut"><i class="fas fa-search-minus"></i></button>
         <button id="resetCenter"><i class="fas fa-home"></i></button>
         <button id="zoomIn"><i class="fas fa-search-plus"></i></button>
-<button id="speedControl">x2 Velocidad</button>
+        <button id="speedControl"><i id="speedIcon" class="fas fa-play"></i></button>
         <button id="pausePlay"><i class="fas fa-pause"></i></button>
-<button id="toggleOrbits">Mostrar/Ocultar Órbitas</button>
-<button id="togglePlanets">Mostrar/Ocultar Planetas</button>
-
+        <button id="toggleOrbits"><i class="fas fa-circle-notch"></i></button>
+        <button id="togglePlanets"><i class="fas fa-globe"></i></button>
+        <button id="toggleSpaceship"><i class="fas fa-space-shuttle"></i></button>
+        <a href="dataPage.html" class="btn btn-primary"><i class="fas fa-database"></i></a>
         <input type="range" id="time-slider" min="0" max="100" value="0" step="1" />
     </div>
+    
+     <!-- <input type="range" id="time-slider" min="0" max="100" value="0" step="1" />  -->
 
-    <!-- Botón para navegar a la página de Firebase -->
-    <div class="container mt-5">
-        <a href="dataPage.html" class="btn btn-primary">Ver Datos de Firebase</a>
-        <button id="toggleSpaceship"><i class="fas fa-space-shuttle"></i></button>
-        
-        <input type="range" id="time-slider" min="0" max="100" value="0" step="1" /> 
-    </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>

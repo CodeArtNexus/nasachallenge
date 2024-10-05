@@ -148,10 +148,17 @@ document.getElementById("pausePlay").addEventListener("click", function() {
     icon.className = isPaused ? 'fas fa-play' : 'fas fa-pause';
 });
 
-// Función para cambiar la velocidad
 document.getElementById("speedControl").addEventListener("click", () => {
     animationSpeed = animationSpeed === 0.01 ? 0.02 : 0.01;
-    document.getElementById("speedControl").innerText = animationSpeed === 0.01 ? "x2 Velocidad" : "Velocidad Normal";
+
+    const speedIcon = document.getElementById("speedIcon");
+    if (animationSpeed === 0.01) {
+        speedIcon.classList.remove("fa-forward");  // Dos triángulos (velocidad x2)
+        speedIcon.classList.add("fa-play");        // Un triángulo (velocidad normal)
+    } else {
+        speedIcon.classList.remove("fa-play");
+        speedIcon.classList.add("fa-forward");
+    }
 });
 
 // Mostrar/Ocultar órbitas
@@ -160,11 +167,11 @@ document.getElementById("toggleOrbits").addEventListener("click", () => {
         line.visible = !line.visible;
     });
 });
-
+selectedPlanet = 0
 // Mostrar/Ocultar planetas y desactivar/activar su interactividad
 document.getElementById("togglePlanets").addEventListener("click", () => {
     circleMeshes.forEach(planet => {
-        if (planet !== selectedPlanet2) {
+        if (planet !== selectedPlanet) {
             planet.visible = !planet.visible;
         }
     });
