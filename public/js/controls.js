@@ -20,6 +20,7 @@ document.getElementById("toggleSpaceship").addEventListener("click", () => {
     } else {
         document.removeEventListener('keydown', handleSpaceshipMovement);
         document.removeEventListener('keyup', stopSpaceshipMovement);
+        resetCameraPosition(); // Restablecer la posición de la cámara al salir de la nave espacial
     }
 });
 let currentTarget = centralSphere; // El objetivo actual es la esfera central
@@ -203,7 +204,7 @@ document.getElementById("resetCenter").addEventListener("click", () => {
 
     controls.target.set(centralSphere.position.x, centralSphere.position.y, centralSphere.position.z);
     controls.update();
-    currentTarget = centralSphere;
+    
 
     // Restaurar la visibilidad de todos los planetas y órbitas
     circleMeshes.forEach(mesh => {
@@ -296,6 +297,8 @@ window.addEventListener('keyup', function (event) {
 
 // Actualizar la posición de la nave espacial
 function updateSpaceshipPosition() {
+    if (!spaceshipControlsActive) return;  // se actualice la posición si la nave está activada
+
     if (moveForward) spaceship.position.z -= speed;
     if (moveBackward) spaceship.position.z += speed;
     if (moveLeft) spaceship.position.x -= speed;
