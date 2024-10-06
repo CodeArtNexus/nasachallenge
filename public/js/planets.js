@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // Tu código de addEventListener aquí
 });
 
 // Definir variables globales
@@ -16,16 +15,16 @@ controls.enableZoom = true;
 
 // Planetas
 const planets = [
-    { name: "Sol", size: 1, radius: 0, modelPath: "modelos/sol.glb", rotationSpeed: 0.01 },
-    { name: "Mercurio", size: 0.3, radius: 5.8, modelPath: "modelos/mercurio.glb", rotationSpeed: 0.02 },
-    { name: "Venus", size: 0.4, radius: 10.8, modelPath: "modelos/venus.glb", rotationSpeed: 0.01 },
-    { name: "Tierra", size: 0.5, radius: 15, modelPath: "modelos/tierra.glb", rotationSpeed: 0.02 },
-    { name: "Marte", size: 0.4, radius: 22.8, modelPath: "modelos/marte.glb", rotationSpeed: 0.03 },
-    { name: "Júpiter", size: 0.9, radius: 77.8, modelPath: "modelos/jupiter.glb", rotationSpeed: 0.01 },
-    { name: "Saturno", size: 0.8, radius: 143, modelPath: "modelos/saturno.glb", rotationSpeed: 0.02 },
-    { name: "Urano", size: 0.7, radius: 287, modelPath: "modelos/urano.glb", rotationSpeed: 0.01 },
-    { name: "Neptuno", size: 0.7, radius: 450, modelPath: "modelos/neptuno.glb", rotationSpeed: 0.01 },
-    { name: "Plutón", size: 0.2, radius: 590, modelPath: "modelos/pluton.glb", rotationSpeed: 0.02 }
+    { name: "Sol", size: 50, radius: 0, modelPath: "modelos/sol.glb", rotationSpeed: 0.01 },
+    { name: "Mercurio", size: 0.244, radius: 57.9, modelPath: "modelos/mercurio.glb", rotationSpeed: 0.02 },
+    { name: "Venus", size: 0.6052, radius: 64.9, modelPath: "modelos/venus.glb", rotationSpeed: 0.01 },
+    { name: "Tierra", size: 0.6371, radius: 70.6, modelPath: "modelos/tierra.glb", rotationSpeed: 0.02 },
+    { name: "Marte", size: 0.339, radius: 81.4, modelPath: "modelos/marte.glb", rotationSpeed: 0.03 },
+    { name: "Júpiter", size: 6.9911, radius: 106.6, modelPath: "modelos/jupiter.glb", rotationSpeed: 0.01 },
+    { name: "Saturno", size: 5.8232, radius: 148.8, modelPath: "modelos/saturno.glb", rotationSpeed: 0.02 },
+    { name: "Urano", size: 2.5362, radius: 200, modelPath: "modelos/urano.glb", rotationSpeed: 0.01 },
+    { name: "Neptuno", size: 2.4622, radius: 280, modelPath: "modelos/neptuno.glb", rotationSpeed: 0.01 },
+    { name: "Plutón", size: 0.118, radius: 320, modelPath: "modelos/pluton.glb", rotationSpeed: 0.02 }
 ];
 
 const loader = new THREE.GLTFLoader();

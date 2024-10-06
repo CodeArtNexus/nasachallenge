@@ -80,7 +80,7 @@ document.body.appendChild(renderer.domElement);
 const spaceshipGeometry = new THREE.BoxGeometry(1, 0.5, 2);
 const spaceshipMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
 const spaceship = new THREE.Mesh(spaceshipGeometry, spaceshipMaterial);
-spaceship.position.set(0, 0, 0);
+spaceship.position.set(150, 150, 150);
 spaceship.visible = false; // Ocultar la nave 
 scene.add(spaceship);
 
