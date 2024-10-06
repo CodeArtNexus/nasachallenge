@@ -1,2 +1,8 @@
-# nasachallenge
-All the information about the development and explanation of the project that is found in the file NasaChallenge.pdf.
+# Web Orrery 3D visualization
+## By: Ignacio Sebastian Bustillos Muñoz, Fernando Nicolás Vásconez González,Antonio Sebastián González Flores, Christyan Estuardo Salas Cardenas, Andrés Santiago Ortiz Ibarra, Nicolas Wilches Parrado  
+
+**All the information about the development and explanation of the project that is found in the file NasaChallenge.pdf.**
+
+### Abstract: 
+This project aims to develop a web application that simulates celestial
+mechanics through an interactive 3D model of the solar system. The application serves as an educational tool, allowing users to visualize and explore astronomical phenomena while fostering an understanding of fundamental programming concepts. By integrating a diegetic interface, users can experience the solar system from the perspective of a spaceship, interacting with various planets and accessing a database of celestial information. This initiative addresses the need for accessible educational resources in Latin America, promoting interest in astronomy and programming among students. The application employs modern web technologies, including HTML,JavaScript (Three.js), and Firebase, ensuring a responsive and engaging user experience. The development process embraced Agile methodologies, fostering collaboration among team members and enhancing problem-solving skills. The project contributes to making complex astronomical concepts more approachable and highlights the significance of interdisciplinary learning in the fields of science and technology.
